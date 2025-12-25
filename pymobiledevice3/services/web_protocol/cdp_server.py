@@ -12,7 +12,7 @@ from pymobiledevice3.services.webinspector import WirTypes
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    app.state.inspector.connect()
+    await app.state.inspector.connect()
     yield
 
 
@@ -21,7 +21,7 @@ app = FastAPI(lifespan=lifespan)
 
 @app.get("/json{_:path}")
 async def available_targets(_: str):
-    app.state.inspector.get_open_pages()
+    await app.state.inspector.get_open_pages()
     targets = []
     for app_id in app.state.inspector.application_pages:
         for page_id, page in app.state.inspector.application_pages[app_id].items():
